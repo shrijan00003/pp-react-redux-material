@@ -129,23 +129,6 @@ class UploadImageView extends React.Component {
       imageArray: [...this.state.imageArray, ...newFileArray],
     });
 
-    // console.log('displaying formdata ', ...formData);
-
-    // files.forEach((file, i) => {
-    //   if (types.every(type => file.type !== type)) {
-    //     errs.push(`'${file.type}' is not a supported format`);
-    //   }
-
-    //   if (file.size > 1500000) {
-    //     errs.push(`'${file.name}' is too large, please pick a smaller file`);
-    //   }
-
-    //   const realativeUrl = URL.createObjectURL(file);
-    //   picUrls = [...picUrls, realativeUrl];
-
-    //   formData.append(i, file);
-    // });
-
     if (errs.length > 0) {
       // return errs.forEach(err => this.toast(err, 'custom', 2000, toastColor));
       this.props.upLoadImageToStore({}, {}, 'error occured here');
@@ -210,9 +193,6 @@ class UploadImageView extends React.Component {
       );
     }
 
-    // const actions = [
-    //   <Button label="Close" primary={true} onClick={this.handleImgClose()} />,
-    // ];
     return (
       <div>
         <Grid item xs={12}>
