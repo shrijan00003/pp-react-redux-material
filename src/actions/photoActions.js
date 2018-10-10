@@ -1,41 +1,37 @@
 import { ACTIONS } from '../constants/photoConstants';
+/**
+ * @param {NUll}
+ */
+export const uploadImagesBegins = () => dispatch => {
+  dispatch({
+    type: ACTIONS.UPLOAD_PENDING,
+  });
+};
 
 /**
  *
  */
-export const uploadImagesBegins = () => ({
-  type: ACTIONS.UPLOAD_PENDING,
-});
-
-/**
- *
- */
-// export const uploadImagesSuccess = img => dispatch => {
-//   dispatch({
-//     type: ACTIONS.UPLOAD_FULLFILLED,
-//     payload: {
-//       img,
-//     },
-//   });
-// };
-export const uploadImagesSuccess = (img, imgPreviewUrls) => ({
-  type: ACTIONS.UPLOAD_FULLFILLED,
-  payload: {
-    img,
-    imgPreviewUrls,
-  },
-});
+export const uploadImagesSuccess = img => dispatch => {
+  dispatch({
+    type: ACTIONS.UPLOAD_FULLFILLED,
+    payload: {
+      img,
+    },
+  });
+};
 
 /**
  *
  * @param {*} error
  */
-export const uploadImagesFailure = error => ({
-  type: ACTIONS.UPLOAD_REJECTED,
-  payload: {
-    error,
-  },
-});
+export const uploadImagesFailure = error => dispatch => {
+  dispatch({
+    type: ACTIONS.UPLOAD_REJECTED,
+    payload: {
+      error,
+    },
+  });
+};
 
 /**
  *
@@ -44,17 +40,6 @@ export const uploadSelectedImagesBegins = () => ({
   type: ACTIONS.UPLOAD_PENDING,
 });
 
-/**
- *
- */
-// export const uploadImagesSuccess = img => dispatch => {
-//   dispatch({
-//     type: ACTIONS.UPLOAD_FULLFILLED,
-//     payload: {
-//       img,
-//     },
-//   });
-// };
 export const uploadSelectedImagesSuccess = img => ({
   type: ACTIONS.UPLOAD_FULLFILLED,
   payload: {
@@ -72,38 +57,3 @@ export const uploadSelectedImagesFailure = error => ({
     error,
   },
 });
-
-/**
- *
- * @param {*} img
- * @param {*} error
- */
-export const uploadImageToStore = (
-  img = [],
-  imgPreviewUrls = [],
-  error = ''
-) => dispatch => {
-  console.log('img in action creator', img);
-  dispatch(uploadImagesBegins());
-  if (error.length > 0) {
-    dispatch(uploadImagesFailure(error));
-  } else {
-    dispatch(uploadImagesSuccess(img, imgPreviewUrls));
-  }
-};
-
-/**
- *
- */
-export const uploadSelectedImageToStore = (
-  img = {},
-  error = ''
-) => dispatch => {
-  console.log('image selected to store', img);
-  dispatch(uploadSelectedImagesBegins());
-  if (error.length > 0) {
-    dispatch(uploadSelectedImagesFailure(error));
-  } else {
-    dispatch(uploadSelectedImagesSuccess(img));
-  }
-};

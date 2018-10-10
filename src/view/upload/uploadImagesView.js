@@ -40,11 +40,9 @@ class UploadImageView extends React.Component {
       uploading: false,
 
       images: [],
-      imagePreviewUrls: [],
 
-      selectedImg: [],
-      selectedIndex: [],
-      selectedImgUrls: [],
+      selectedImages: [],
+      selectedIndexes: [],
 
       isImageOpen: false,
       currentImg: '',
@@ -52,37 +50,30 @@ class UploadImageView extends React.Component {
       classes,
 
       imageArray: [],
-
-      cheked: false,
     };
   }
 
   handleCheckPicture = async (img, imgIndex) => {
-    console.log('img came here as parameter', img);
-    console.log('set of selected url of file', this.state.selectedImgUrls);
-
-    if (this.state.selectedIndex.indexOf(imgIndex) === -1) {
+    if (this.state.selectedIndexes.indexOf(imgIndex) === -1) {
       await this.setState({
-        selectedIndex: [...this.state.selectedIndex, imgIndex],
-        selectedImg: [...this.state.selectedImgUrls, img],
+        selectedIndexes: [...this.state.selectedIndexes, imgIndex],
+        selectedImages: [...this.state.selectedImages, img],
       });
     } else {
-      let selectedIndexArray = [...this.state.selectedIndex];
-      let selectedImgUrlsArray = [...this.state.selectedImgUrls];
+      let selectedIndexArray = [...this.state.selectedIndexes];
+      let selectedImageArray = [...this.state.selectedImages];
 
       let indexOfIndex = selectedIndexArray.indexOf(imgIndex);
-      let indexOfImgUrl = selectedImgUrlsArray.indexOf(img);
+      let indexOfSelectedImage = selectedImageArray.indexOf(img);
 
       selectedIndexArray.splice(indexOfIndex, 1);
-      selectedImgUrlsArray.splice(indexOfImgUrl, 1);
+      selectedImageArray.splice(indexOfSelectedImage, 1);
 
       await this.setState({
-        selectedIndex: selectedIndexArray,
-        selectedImgUrls: selectedImgUrlsArray,
+        selectedIndexes: selectedIndexArray,
+        selectedImages: selectedImageArray,
       });
     }
-
-    console.log('set of selected Index of file', this.state.selectedIndex);
   };
 
   handleImgClose = () => {
@@ -102,19 +93,16 @@ class UploadImageView extends React.Component {
       alert(msg);
     }
 
-    let picUrls = [];
     const types = ['image/png', 'image/jpg', 'image/jpeg', 'image/gif'];
 
     const newFileArray = files.map((file, index) => {
       if (types.every(type => file.type !== type)) {
-        return {
-          error: 'file type not matched',
-        };
+        errs.push('file type not matched');
+        return false;
       }
       if (file.size > 1500000) {
-        return {
-          error: 'file is too large',
-        };
+        errs.push('file is too large');
+        return false;
       } else {
         return {
           id: UID(),
@@ -125,36 +113,21 @@ class UploadImageView extends React.Component {
       }
     });
 
-    await this.setState({
-      imageArray: [...this.state.imageArray, ...newFileArray],
-    });
-
+    this.props.uploadImagesBegins();
     if (errs.length > 0) {
-      // return errs.forEach(err => this.toast(err, 'custom', 2000, toastColor));
-      this.props.upLoadImageToStore({}, {}, 'error occured here');
-      console.error(errs);
+      this.props.uploadImagesFailure(errs);
     } else {
       await this.setState({
-        images: [...this.state.images, ...files],
-        imagePreviewUrls: [...this.state.imagePreviewUrls, ...picUrls],
+        imageArray: [...this.state.imageArray, ...newFileArray],
       });
 
-      this.props.upLoadImageToStore(
-        this.state.images,
-        this.state.imagePreviewUrls,
-        ''
-      );
+      this.props.uploadImagesSuccess(this.state.imageArray);
     }
   };
 
   render() {
     let imageListContent;
-    const {
-      imagePreviewUrls,
-      isImageOpen,
-      currentImg,
-      imageArray,
-    } = this.state;
+    const { isImageOpen, currentImg, imageArray } = this.state;
     if (imageArray.length > 0) {
       imageListContent = (
         <div className={this.state.classes.root}>
@@ -176,7 +149,7 @@ class UploadImageView extends React.Component {
                       >
                         <CheckBoxIcon
                           imgIndex={img.id}
-                          indexArray={this.state.selectedIndex}
+                          indexArray={this.state.selectedIndexes}
                         />
                       </IconButton>
                     }

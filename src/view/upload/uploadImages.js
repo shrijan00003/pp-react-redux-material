@@ -1,8 +1,9 @@
 import { connect } from 'react-redux';
 import UploadImagesView from './uploadImagesView';
 import {
-  uploadImageToStore,
-  uploadSelectedImageToStore,
+  uploadImagesBegins,
+  uploadImagesFailure,
+  uploadImagesSuccess,
 } from '../../actions/photoActions';
 
 const mapStateToProps = state => {
@@ -13,11 +14,14 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    upLoadImageToStore: (img = [], imgPreviewUrls = [], error = '') => {
-      dispatch(uploadImageToStore(img, imgPreviewUrls, error));
+    uploadImagesBegins: () => {
+      dispatch(uploadImagesBegins());
     },
-    uploadSelectedImageToStore: (img = [], error = '') => {
-      dispatch(uploadSelectedImageToStore(img, error));
+    uploadImagesFailure: errs => {
+      dispatch(uploadImagesFailure(errs));
+    },
+    uploadImagesSuccess: img => {
+      dispatch(uploadImagesSuccess(img));
     },
   };
 };

@@ -10,10 +10,8 @@ const INITIAL_STATE = {
   isProccessed: false,
 
   uploadedImages: [],
-  uploadedImageUrls: [],
 
   selectedImages: [],
-  selectedImageUrls: [],
 };
 
 const photoReducer = (state = INITIAL_STATE, action) => {
@@ -30,7 +28,6 @@ const photoReducer = (state = INITIAL_STATE, action) => {
         ...state,
         isUploaded: true,
         uploadedImages: action.payload.img,
-        uploadedImageUrls: action.payload.imgPreviewUrls,
       };
 
     case ACTIONS.UPLOAD_REJECTED:
