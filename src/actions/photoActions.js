@@ -37,13 +37,13 @@ export const uploadImagesFailure = error => dispatch => {
  *
  */
 export const uploadSelectedImagesBegins = () => ({
-  type: ACTIONS.UPLOAD_PENDING,
+  type: ACTIONS.SELECTED_UPLOAD_PENDING,
 });
 
-export const uploadSelectedImagesSuccess = img => ({
-  type: ACTIONS.UPLOAD_FULLFILLED,
+export const uploadSelectedImagesSuccess = selectedImages => ({
+  type: ACTIONS.SELECTED_UPLOAD_FULLFILLED,
   payload: {
-    img,
+    selectedImages,
   },
 });
 
@@ -52,7 +52,7 @@ export const uploadSelectedImagesSuccess = img => ({
  * @param {*} error
  */
 export const uploadSelectedImagesFailure = error => ({
-  type: ACTIONS.UPLOAD_REJECTED,
+  type: ACTIONS.SELECTEED_UPLOAD_FAILED,
   payload: {
     error,
   },

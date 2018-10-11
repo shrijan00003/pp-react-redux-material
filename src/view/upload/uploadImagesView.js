@@ -1,9 +1,10 @@
 import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import CheckBoxIcon from './checkBoxIcon';
-import { StayPrimaryPortrait } from '@material-ui/icons';
+import { StayPrimaryPortrait, Cancel, ArrowForward } from '@material-ui/icons';
 import { withStyles } from '@material-ui/core/styles';
-import UID from 'uuid/v1';
+import UID from 'uuid/v4';
+import { Redirect } from 'react-router-dom';
 
 import {
   GridList,
@@ -50,6 +51,8 @@ class UploadImageView extends React.Component {
       classes,
 
       imageArray: [],
+
+      referrer: false,
     };
   }
 
@@ -83,6 +86,22 @@ class UploadImageView extends React.Component {
   };
 
   componentDidMount() {}
+
+  processWithOrderHandler = () => {
+    console.log('we are storing selected pictures in the store');
+    this.props.uploadSelectedImagesBegins();
+    if (this.state.selectedImages.length > 0) {
+      this.props.uploadSelectedImagesSuccess(this.state.selectedImages);
+    } else {
+      console.error('please select imagess');
+      this.props.uploadSelectedImagesFailure({
+        error: 'Image Not selected !!!!!!! Please select images',
+      });
+    }
+    this.setState({
+      referrer: '/orderpage',
+    });
+  };
 
   onInputChange = async e => {
     const errs = [];
@@ -126,8 +145,22 @@ class UploadImageView extends React.Component {
   };
 
   render() {
+    //check if there is referrer and then redirect
+    const { referrer } = this.state;
+    if (referrer) {
+      return <Redirect to={referrer} />;
+    }
     let imageListContent;
     const { isImageOpen, currentImg, imageArray } = this.state;
+    const { isUploaded } = this.props;
+
+    let isProcessButtonDisabled;
+    if (isUploaded) {
+      isProcessButtonDisabled = false;
+    } else {
+      isProcessButtonDisabled = true;
+    }
+
     if (imageArray.length > 0) {
       imageListContent = (
         <div className={this.state.classes.root}>
@@ -135,7 +168,8 @@ class UploadImageView extends React.Component {
             <GridList cellHeight={180} className={this.state.classes.gridList}>
               <GridListTile key="Subheader" cols={2} style={{ height: 'auto' }}>
                 <ListSubheader component="div">
-                  Your Uploaded Pictures Here
+                  Your Uploaded Pictures Here will be expired after 30 days
+                  !!!!!!!!!!!!!!!!!!!!!!!!!!
                 </ListSubheader>
               </GridListTile>
               {imageArray.map((img, index) => (
@@ -267,6 +301,41 @@ class UploadImageView extends React.Component {
               >
                 <StayPrimaryPortrait />
                 MY DEVICE
+              </Button>
+            </Paper>
+
+            {/* paper for processing further */}
+            <Paper
+              style={{ padding: 10, paddingLeft: 10, margin: 10 }}
+              align="center"
+            >
+              <Typography
+                variant="title"
+                align="center"
+                style={{ paddingBottom: 20 }}
+              >
+                PROCESS FURTHER
+              </Typography>
+              <Button
+                variant="contained"
+                disabled={isProcessButtonDisabled}
+                size="large"
+                color="inherit"
+                style={{ width: '90%', marginBottom: 10 }}
+              >
+                <Cancel />
+                CANCEL
+              </Button>
+              <Button
+                variant="contained"
+                disabled={isProcessButtonDisabled}
+                size="large"
+                color="inherit"
+                style={{ width: '90%', marginBottom: 10 }}
+                onClick={this.processWithOrderHandler}
+              >
+                <ArrowForward />
+                PROCESS WITH ORDER
               </Button>
             </Paper>
           </Grid>

@@ -4,6 +4,7 @@ import FrontBodyView from '../view/landing/frontBodyView';
 import FrontFooterView from '../view/landing/frontFooterView';
 import UploadImages from '../view/upload/uploadImages';
 import Login from '../view/login/login';
+import OrderPage from '../view/order/oder';
 // import store from '../store';
 
 import {
@@ -21,6 +22,7 @@ const Routes = () => {
         <Switch>
           <Route exact path="/" component={FrontBodyView} />
           <Route exact path="/login" component={Login} />
+          <Route exact path="/orderpage" component={OrderPage} />
           <Route exact path="/landingPage" component={FrontBodyView} />
           <Route exact path="/uploadImages" component={UploadImages} />
         </Switch>

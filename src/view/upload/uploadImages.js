@@ -4,11 +4,14 @@ import {
   uploadImagesBegins,
   uploadImagesFailure,
   uploadImagesSuccess,
+  uploadSelectedImagesBegins,
+  uploadSelectedImagesSuccess,
+  uploadSelectedImagesFailure,
 } from '../../actions/photoActions';
 
 const mapStateToProps = state => {
   return {
-    demoProps: 'hello',
+    isUploaded: state.photo.isUploaded,
   };
 };
 
@@ -22,6 +25,15 @@ const mapDispatchToProps = dispatch => {
     },
     uploadImagesSuccess: img => {
       dispatch(uploadImagesSuccess(img));
+    },
+    uploadSelectedImagesBegins: () => {
+      dispatch(uploadSelectedImagesBegins());
+    },
+    uploadSelectedImagesSuccess: img => {
+      dispatch(uploadSelectedImagesSuccess(img));
+    },
+    uploadSelectedImagesFailure: errs => {
+      dispatch(uploadSelectedImagesFailure(errs));
     },
   };
 };

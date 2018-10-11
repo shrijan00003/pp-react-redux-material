@@ -1,21 +1,11 @@
-import React from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
-// import Paper from '@material-ui/core/Paper';
-import {
-  Grid,
-  Button,
-  // Dialog,
-  // TextField,
-  Typography,
-  // DialogTitle,
-  // DialogContent,
-  // DialogActions,
-  // DialogContentText,
-} from '@material-ui/core';
+import { Grid, Button, Typography } from '@material-ui/core';
 import { CloudUpload } from '@material-ui/icons';
 import './landing.css';
 import MakeRow from './makeRow';
+import { Redirect } from 'react-router-dom';
 
 const styles = theme => ({
   button: {
@@ -31,55 +21,69 @@ const styles = theme => ({
   },
 });
 
-const handleClickForUploadePhotos = props => {
-  props.unsetLandingPage();
-};
-
-function FrontBodyComponent(props) {
-  const { classes } = props;
-  const ids = {
-    print: 'front-print-div',
-    frame: 'front-frame-div',
+class FrontBodyComponent extends Component {
+  constructor(props) {
+    super(props);
+    const { classes } = props;
+    this.state = {
+      classes,
+      referrer: false,
+    };
+  }
+  handleClickForUploadePhotos = () => {
+    console.log('upload image clicked');
+    this.setState({ referrer: '/uploadImages' });
   };
-  return (
-    <div className={classes.root}>
-      <Grid container spacing={40}>
-        <Grid item xs={12}>
-          <div id="body-bg-image">
-            <Button
-              onClick={handleClickForUploadePhotos(props)}
-              variant="contained"
-              color="secondary"
-              className={classes.button}
-              size="large"
-              style={{ paddingLeft: '60px', paddingRight: '60px' }}
-            >
-              Upload Your Picture Here
-              <div style={{ paddingLeft: '10px' }}>
-                <CloudUpload className={classes.rightIcon} />
-              </div>
-            </Button>
-          </div>
-        </Grid>
-      </Grid>
+  render() {
+    const ids = {
+      print: 'front-print-div',
+      frame: 'front-frame-div',
+    };
 
-      <Grid container spacing={40}>
-        <Grid item xs={12}>
-          <Typography variant="display4" gutterBottom align="center">
-            OUR SERVICES
-          </Typography>
-        </Grid>
-      </Grid>
+    // redirecting if we have referre
+    const { referrer } = this.state;
+    if (referrer) return <Redirect to={referrer} />;
 
-      <Grid container spacing={40}>
-        <Grid item xs />
-        <Grid item xs={8} container spacing={16}>
-          <MakeRow classes={classes} ids={ids} />
+    return (
+      <div className={this.state.classes.root}>
+        <Grid container spacing={40}>
+          <Grid item xs={12}>
+            <div id="body-bg-image">
+              <Button
+                variant="contained"
+                color="secondary"
+                className={this.state.classes.button}
+                size="large"
+                style={{ paddingLeft: '60px', paddingRight: '60px' }}
+                onClick={this.handleClickForUploadePhotos}
+              >
+                Upload Your Picture Here
+                <div style={{ paddingLeft: '10px' }}>
+                  <CloudUpload className={this.state.classes.rightIcon} />
+                </div>
+              </Button>
+            </div>
+          </Grid>
         </Grid>
-        <Grid item xs />
-      </Grid>
-    </div>
-  );
+
+        <Grid container spacing={40}>
+          <Grid item xs={12}>
+            <Typography variant="display4" gutterBottom align="center">
+              OUR SERVICES
+            </Typography>
+          </Grid>
+        </Grid>
+
+        <Grid container spacing={40}>
+          <Grid item xs />
+          <Grid item xs={8} container spacing={16}>
+            <MakeRow classes={this.state.classes} ids={ids} />
+          </Grid>
+          <Grid item xs />
+        </Grid>
+      </div>
+    );
+  }
 }
 
 FrontBodyComponent.propTypes = {
