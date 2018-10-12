@@ -12,6 +12,7 @@ import {
 const mapStateToProps = state => {
   return {
     isUploaded: state.photo.isUploaded,
+    uploadedImages: state.photo.uploadedImages,
   };
 };
 

@@ -30,7 +30,7 @@ const photoReducer = (state = INITIAL_STATE, action) => {
       return {
         ...state,
         isUploaded: true,
-        uploadedImages: action.payload.img,
+        uploadedImages: [...state.uploadedImages, ...action.payload.img],
       };
 
     case ACTIONS.UPLOAD_REJECTED:
@@ -50,7 +50,10 @@ const photoReducer = (state = INITIAL_STATE, action) => {
       return {
         ...state,
         isSelectedUploaded: true,
-        selectedImages: action.payload.selectedImages,
+        selectedImages: [
+          ...state.selectedImages,
+          ...action.payload.selectedImages,
+        ],
       };
 
     case ACTIONS.SELECTEED_UPLOAD_FAILED:

@@ -64,6 +64,8 @@ class OrderView extends Component {
       printingObject: {},
       printingData: [],
       framingData: [],
+
+      cartedImages: {},
     };
   }
 
@@ -74,31 +76,118 @@ class OrderView extends Component {
     });
   };
 
-  handlePrint = async (imgId = '', type = '', e) => {
-    console.log('image id ', imgId);
+  handlePrintFrame = async (imgId = '', type = '', e) => {
     const v = e.target.value;
-    let obj = {};
-    obj[imgId] = {
-      ...(type && { [type]: v }),
-    };
 
-    console.log('internal object', obj);
+    // if (Object.keys(this.state.cartedImages).length === 0) {
     await this.setState({
-      printingObject: { ...this.state.printingObject, ...obj },
+      cartedImages: {
+        ...this.state.cartedImages,
+        [imgId]: {
+          printing: {
+            p4by6: this.state.cartedImages[imgId]
+              ? this.state.cartedImages[imgId].printing.p4by6
+              : 0,
+            p5by7: this.state.cartedImages[imgId]
+              ? this.state.cartedImages[imgId].printing.p5by7
+              : 0,
+            p8by10: this.state.cartedImages[imgId]
+              ? this.state.cartedImages[imgId].printing.p8by10
+              : 0,
+          },
+          framing: {
+            f4by6: this.state.cartedImages[imgId]
+              ? this.state.cartedImages[imgId].framing.f4by6
+              : 0,
+            f5by7: this.state.cartedImages[imgId]
+              ? this.state.cartedImages[imgId].framing.f5by7
+              : 0,
+            f8by10: this.state.cartedImages[imgId]
+              ? this.state.cartedImages[imgId].framing.f8by10
+              : 0,
+          },
+        },
+      },
     });
-    await this.setState({
-      printingData: [...this.state.printingData, this.state.printingObject],
-    });
+    // }
 
-    console.log('printing array', this.state.printingData);
-  };
-  p5by7 = (imgId, e) => {
-    console.log(e.target.value);
-    console.log('image id', imgId);
-  };
-  p8by10 = (imgId, e) => {
-    console.log(e.target.value);
-    console.log('image id', imgId);
+    await this.setState(prevState => ({
+      ...prevState,
+      cartedImages: {
+        ...prevState.cartedImages,
+        [imgId]: {
+          ...prevState.cartedImages[imgId],
+          printing: {
+            ...prevState.cartedImages[imgId].printing,
+            p4by6:
+              //  type === 'p4by6' && Number(v),
+              type === 'p4by6'
+                ? Number(v)
+                : prevState.cartedImages[imgId].printing.p4by6,
+            p5by7:
+              // type === 'p5by7' && Number(v),
+              type === 'p5by7'
+                ? Number(v)
+                : prevState.cartedImages[imgId].printing.p5by7,
+            p8by10:
+              // type === 'p8by10' && Number(v),
+              type === 'p8by10'
+                ? Number(v)
+                : prevState.cartedImages[imgId].printing.p8by10,
+          },
+          framing: {
+            ...prevState.cartedImages[imgId].framing,
+            f4by6:
+              // type === 'f4by6' && Number(v),
+              type === 'f4by6'
+                ? Number(v)
+                : prevState.cartedImages[imgId].framing.f4by6,
+            f5by7:
+              // type === 'f5by7' && Number(v),
+              type === 'f5by7'
+                ? Number(v)
+                : prevState.cartedImages[imgId].framing.f5by7,
+            f8by10:
+              //  type === 'f8by10' && Number(v),
+              type === 'f8by10'
+                ? Number(v)
+                : prevState.cartedImages[imgId].framing.f8by10,
+          },
+        },
+      },
+    }));
+    console.log('structure of after', this.state.cartedImages);
+
+    // obj[imgId] = {
+    //   print: {},
+    //   frame: {},
+    // };
+    // this.setState(prevState => ({
+    //   ...prevState,
+    //   cartedImages: [...prevState.cartedImages, obj],
+    // }));
+
+    // console.log('object', obj);
+    // await this.setState({
+    //   cartedImages: [...this.state.cartedImages, obj],
+    // });
+
+    // console.log('image id ', imgId);
+    // const v = e.target.value;
+    // let obj = {};
+    // obj[imgId] = {
+    //   ...(type && { [type]: v }),
+    // };
+
+    // console.log('internal object', obj);
+    // await this.setState({
+    //   printingObject: { ...this.state.printingObject, ...obj },
+    // });
+    // await this.setState({
+    //   printingData: [...this.state.printingData, this.state.printingObject],
+    // });
+
+    // console.log('printing array', this.state.printingData);
   };
   render() {
     const { referrer } = this.state;
@@ -144,7 +233,7 @@ class OrderView extends Component {
                       id="outlined-number"
                       label="4 X 6 (Rs 20)"
                       // value={0}
-                      onBlur={e => this.handlePrint(img.id, 'p4by6', e)}
+                      onBlur={e => this.handlePrintFrame(img.id, 'p4by6', e)}
                       type="number"
                       className={this.state.classes.textField}
                       InputLabelProps={{
@@ -159,7 +248,7 @@ class OrderView extends Component {
                       id="outlined-number"
                       label="5 X 7 (Rs 30)"
                       // value={0}
-                      onBlur={e => this.handlePrint(img.id, 'p5by7', e)}
+                      onBlur={e => this.handlePrintFrame(img.id, 'p5by7', e)}
                       type="number"
                       className={this.state.classes.textField}
                       InputLabelProps={{
@@ -174,7 +263,7 @@ class OrderView extends Component {
                       id="outlined-number"
                       label="8 X 10 (Rs 65)"
                       // value={0}
-                      onBlur={e => this.handlePrint(img.id, 'p8by10', e)}
+                      onBlur={e => this.handlePrintFrame(img.id, 'p8by10', e)}
                       type="number"
                       className={this.state.classes.textField}
                       InputLabelProps={{
@@ -194,8 +283,8 @@ class OrderView extends Component {
                     <TextField
                       id="outlined-number"
                       label="4 X 6 (Rs 200)"
-                      value={0}
-                      onChange={this.f4by6}
+                      // value={0}
+                      onChange={e => this.handlePrintFrame(img.id, 'f4by6', e)}
                       type="number"
                       className={this.state.classes.textField}
                       InputLabelProps={{
@@ -209,8 +298,8 @@ class OrderView extends Component {
                     <TextField
                       id="outlined-number"
                       label="5 X 7 (Rs 300)"
-                      value={0}
-                      onChange={this.f5by7}
+                      // value={0}
+                      onChange={e => this.handlePrintFrame(img.id, 'f5by7', e)}
                       type="number"
                       className={this.state.classes.textField}
                       InputLabelProps={{
@@ -224,8 +313,8 @@ class OrderView extends Component {
                     <TextField
                       id="outlined-number"
                       label="8 X 10 Rs(500)"
-                      value={0}
-                      onChange={this.f8by10}
+                      // value={0}
+                      onChange={e => this.handlePrintFrame(img.id, 'f8by10', e)}
                       type="number"
                       className={this.state.classes.textField}
                       InputLabelProps={{

@@ -152,8 +152,9 @@ class UploadImageView extends React.Component {
     }
     let imageListContent;
     const { isImageOpen, currentImg, imageArray } = this.state;
-    const { isUploaded } = this.props;
+    const { isUploaded, uploadedImages } = this.props;
 
+    console.log('uploaded images in uploadimgage view', uploadedImages);
     let isProcessButtonDisabled;
     if (isUploaded) {
       isProcessButtonDisabled = false;
@@ -161,7 +162,7 @@ class UploadImageView extends React.Component {
       isProcessButtonDisabled = true;
     }
 
-    if (imageArray.length > 0) {
+    if (uploadedImages.length > 0) {
       imageListContent = (
         <div className={this.state.classes.root}>
           <form>
@@ -172,7 +173,7 @@ class UploadImageView extends React.Component {
                   !!!!!!!!!!!!!!!!!!!!!!!!!!
                 </ListSubheader>
               </GridListTile>
-              {imageArray.map((img, index) => (
+              {uploadedImages.map((img, index) => (
                 <GridListTile key={index}>
                   <img src={img.imgUrl} alt="title" />
                   <GridListTileBar
