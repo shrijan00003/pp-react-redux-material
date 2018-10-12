@@ -79,7 +79,6 @@ class OrderView extends Component {
   handlePrintFrame = async (imgId = '', type = '', e) => {
     const v = e.target.value;
 
-    // if (Object.keys(this.state.cartedImages).length === 0) {
     await this.setState({
       cartedImages: {
         ...this.state.cartedImages,
@@ -120,17 +119,14 @@ class OrderView extends Component {
           printing: {
             ...prevState.cartedImages[imgId].printing,
             p4by6:
-              //  type === 'p4by6' && Number(v),
               type === 'p4by6'
                 ? Number(v)
                 : prevState.cartedImages[imgId].printing.p4by6,
             p5by7:
-              // type === 'p5by7' && Number(v),
               type === 'p5by7'
                 ? Number(v)
                 : prevState.cartedImages[imgId].printing.p5by7,
             p8by10:
-              // type === 'p8by10' && Number(v),
               type === 'p8by10'
                 ? Number(v)
                 : prevState.cartedImages[imgId].printing.p8by10,
@@ -138,17 +134,14 @@ class OrderView extends Component {
           framing: {
             ...prevState.cartedImages[imgId].framing,
             f4by6:
-              // type === 'f4by6' && Number(v),
               type === 'f4by6'
                 ? Number(v)
                 : prevState.cartedImages[imgId].framing.f4by6,
             f5by7:
-              // type === 'f5by7' && Number(v),
               type === 'f5by7'
                 ? Number(v)
                 : prevState.cartedImages[imgId].framing.f5by7,
             f8by10:
-              //  type === 'f8by10' && Number(v),
               type === 'f8by10'
                 ? Number(v)
                 : prevState.cartedImages[imgId].framing.f8by10,
@@ -157,37 +150,6 @@ class OrderView extends Component {
       },
     }));
     console.log('structure of after', this.state.cartedImages);
-
-    // obj[imgId] = {
-    //   print: {},
-    //   frame: {},
-    // };
-    // this.setState(prevState => ({
-    //   ...prevState,
-    //   cartedImages: [...prevState.cartedImages, obj],
-    // }));
-
-    // console.log('object', obj);
-    // await this.setState({
-    //   cartedImages: [...this.state.cartedImages, obj],
-    // });
-
-    // console.log('image id ', imgId);
-    // const v = e.target.value;
-    // let obj = {};
-    // obj[imgId] = {
-    //   ...(type && { [type]: v }),
-    // };
-
-    // console.log('internal object', obj);
-    // await this.setState({
-    //   printingObject: { ...this.state.printingObject, ...obj },
-    // });
-    // await this.setState({
-    //   printingData: [...this.state.printingData, this.state.printingObject],
-    // });
-
-    // console.log('printing array', this.state.printingData);
   };
   render() {
     const { referrer } = this.state;
